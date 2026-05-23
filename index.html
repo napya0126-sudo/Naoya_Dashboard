@@ -408,7 +408,6 @@
 
             function renderNotebookLM(data) {
                 const epEl = document.getElementById('nlm-episodes');
-                const themeEl = document.getElementById('nlm-english-theme');
                 if (!data) { epEl.innerHTML = '<div class="text-xs text-red-400 text-center py-2">Failed to load</div>'; return; }
 
                 if (!data.episodes || data.episodes.length === 0) {
@@ -423,7 +422,6 @@
                             <span class="text-xs text-gray-300 ml-2">#${ep.episode}</span>
                         </div>`).join('');
                 }
-                themeEl.textContent = data.english_theme || '—';
             }
 
             function renderVocabulary(data) {
