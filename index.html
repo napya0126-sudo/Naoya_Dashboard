@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -134,6 +135,10 @@
                 <div id="ai-usage-stats" class="space-y-2">
                     <div class="text-xs text-gray-400 text-center py-2">Loading...</div>
                 </div>
+                <div class="mt-4">
+                    <p class="text-xs text-gray-400 font-medium mb-2">History (Total Score)</p>
+                    <canvas id="ai-usage-chart" height="120"></canvas>
+                </div>
             </article>
 
             <!-- Card 2: Gemini Daily Search -->
@@ -253,7 +258,20 @@
                     { label: 'Claude Weekly', pct: c.weekly_all ?? 0, color: 'text-purple-400' },
                     { label: 'Gemini Weekly', pct: g.weekly ?? 0, color: 'text-blue-400' },
                 ];
-                el.innerHTML = rows.map(r => `
+                const totalScore = rows.reduce((sum, r) => sum + r.pct, 0);
+                const totalMax = rows.length * 100;
+                const totalPct = Math.round(totalScore / totalMax * 100);
+                const totalBar = '█'.repeat(Math.round(totalPct / 10)) + '░'.repeat(10 - Math.round(totalPct / 10));
+                el.innerHTML = `
+                    <div class="bg-purple-50 rounded-xl px-4 py-3 mb-3 border border-purple-100 flex items-center justify-between">
+                        <div>
+                            <p class="text-xs text-purple-400 font-medium mb-0.5">Total AI Score</p>
+                            <p class="text-2xl font-black text-purple-600">${Math.round(totalScore)}<span class="text-sm font-semibold text-purple-300"> / ${totalMax}</span></p>
+                            <span class="font-mono text-xs text-purple-400 tracking-tight">${totalBar} ${totalPct}%</span>
+                        </div>
+                        <div class="text-3xl">🤖</div>
+                    </div>` +
+                rows.map(r => `
                     <div class="flex items-center justify-between gap-2">
                         <span class="text-xs text-gray-500 w-28 shrink-0">${r.label}</span>
                         <span class="font-mono text-xs ${r.color} tracking-tight">${usageBar(r.pct)}</span>
@@ -261,6 +279,32 @@
                     </div>`).join('');
                 const updated = data.captured_at ? data.captured_at.slice(0, 10) : '';
                 if (updated) el.insertAdjacentHTML('beforeend', `<p class="text-xs text-gray-300 text-right mt-1">${updated}</p>`);
+
+                // history chart
+                const history = data.history || [];
+                if (history.length > 0) {
+                    const labels = history.map(h => h.date.slice(5)); // MM-DD
+                    const ctx = document.getElementById('ai-usage-chart').getContext('2d');
+                    new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels,
+                            datasets: [
+                                { label: 'Claude Session', data: history.map(h => h.claude_session), backgroundColor: 'rgba(168,85,247,0.7)', borderRadius: 4 },
+                                { label: 'Claude Weekly', data: history.map(h => h.claude_weekly), backgroundColor: 'rgba(196,147,251,0.7)', borderRadius: 4 },
+                                { label: 'Gemini Weekly', data: history.map(h => h.gemini_weekly), backgroundColor: 'rgba(96,165,250,0.7)', borderRadius: 4 },
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: { legend: { labels: { font: { size: 10 }, boxWidth: 12 } } },
+                            scales: {
+                                x: { stacked: true, ticks: { font: { size: 10 } }, grid: { display: false } },
+                                y: { stacked: true, ticks: { font: { size: 10 } }, max: 150, grid: { color: 'rgba(0,0,0,0.05)' } }
+                            }
+                        }
+                    });
+                }
             }
 
             function renderNotebookLM(data) {

@@ -10,7 +10,37 @@
     "gemini": {
       "current": 0.0,
       "weekly": 4.0
-    }
+    },
+    "history": [
+      {
+        "date": "2026-05-20",
+        "total_score": 51.0,
+        "claude_session": 38.0,
+        "claude_weekly": 11.0,
+        "gemini_weekly": 2.0
+      },
+      {
+        "date": "2026-05-21",
+        "total_score": 26.0,
+        "claude_session": 5.0,
+        "claude_weekly": 18.0,
+        "gemini_weekly": 3.0
+      },
+      {
+        "date": "2026-05-22",
+        "total_score": 62.0,
+        "claude_session": 30.0,
+        "claude_weekly": 29.0,
+        "gemini_weekly": 3.0
+      },
+      {
+        "date": "2026-05-23",
+        "total_score": 35.0,
+        "claude_session": 26.0,
+        "claude_weekly": 5.0,
+        "gemini_weekly": 4.0
+      }
+    ]
   },
   "notebooklm": {
     "today": "2026-05-23",

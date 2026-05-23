@@ -16,14 +16,14 @@ def get_ai_usage():
     conn = sqlite3.connect(AI_DB)
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
+
+    # latest snapshot
     cur.execute("""
         SELECT service, metric, percent, captured_at
         FROM usage_snapshots
         WHERE captured_at = (SELECT MAX(captured_at) FROM usage_snapshots)
     """)
     rows = cur.fetchall()
-    conn.close()
-
     data = {"captured_at": None}
     for r in rows:
         svc = r["service"]
@@ -31,6 +31,36 @@ def get_ai_usage():
             data[svc] = {}
         data[svc][r["metric"]] = r["percent"]
         data["captured_at"] = r["captured_at"]
+
+    # daily history: last 14 days, pick the latest snapshot per day
+    cur.execute("""
+        SELECT date(captured_at) as day, service, metric, percent
+        FROM usage_snapshots
+        WHERE captured_at IN (
+            SELECT MAX(captured_at) FROM usage_snapshots
+            GROUP BY date(captured_at)
+        )
+        AND date(captured_at) >= date('now', '-13 days')
+        ORDER BY day ASC
+    """)
+    history_rows = cur.fetchall()
+    conn.close()
+
+    # aggregate per day -> total score (session + weekly_all + gemini weekly)
+    from collections import defaultdict
+    days = defaultdict(dict)
+    for r in history_rows:
+        days[r["day"]][f"{r['service']}.{r['metric']}"] = r["percent"]
+
+    history = []
+    for day in sorted(days.keys()):
+        d = days[day]
+        total = (d.get("claude.session", 0) + d.get("claude.weekly_all", 0) + d.get("gemini.weekly", 0))
+        history.append({"date": day, "total_score": round(total, 1),
+                        "claude_session": d.get("claude.session", 0),
+                        "claude_weekly": d.get("claude.weekly_all", 0),
+                        "gemini_weekly": d.get("gemini.weekly", 0)})
+    data["history"] = history
     return data
 
 
