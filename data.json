@@ -55,15 +55,35 @@
     "english_theme": "英語学習セッション"
   },
   "duolingo": {
-    "streak": 354,
-    "total_xp": 41668,
+    "streak": 355,
+    "total_xp": 41706,
     "today_xp": null,
     "history": [
       {
         "date": "2026-05-23",
         "xp_earned": null,
-        "total_xp": 41668,
-        "streak": 354
+        "total_xp": 41706,
+        "streak": 355
+      }
+    ]
+  },
+  "shadowing": {
+    "today": "2026-05-23",
+    "today_attempts": 0,
+    "today_avg_coverage": 0,
+    "today_avg_wpm": 0,
+    "history": [
+      {
+        "date": "2026-03-24",
+        "attempts": 6,
+        "avg_coverage": 13.7,
+        "avg_wpm": 82.7
+      },
+      {
+        "date": "2026-03-25",
+        "attempts": 1,
+        "avg_coverage": 20.0,
+        "avg_wpm": 82.0
       }
     ]
   }

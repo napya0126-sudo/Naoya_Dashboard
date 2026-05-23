@@ -172,15 +172,27 @@
                     <h2 class="text-lg font-bold text-text-dark">Shadowing</h2>
                 </div>
 
-                <div class="flex justify-between items-center mb-5">
-                    <div>
-                        <p class="text-sm text-gray-500">Last practice: <span class="font-bold text-red-400">3 days ago 😅</span></p>
-                        <p class="text-sm text-gray-500 mt-1">This week: <span class="font-bold text-text-dark">0 sessions</span></p>
+                <div class="flex gap-3 mb-4">
+                    <div class="flex-1 bg-pink-50 rounded-xl p-3 border border-pink-100 text-center">
+                        <p id="shad-attempts" class="text-2xl font-black text-pink-500">—</p>
+                        <p class="text-xs text-gray-500 mt-0.5">today sessions</p>
+                    </div>
+                    <div class="flex-1 bg-pink-50 rounded-xl p-3 border border-pink-100 text-center">
+                        <p id="shad-coverage" class="text-2xl font-black text-pink-400">—</p>
+                        <p class="text-xs text-gray-500 mt-0.5">avg coverage %</p>
+                    </div>
+                    <div class="flex-1 bg-pink-50 rounded-xl p-3 border border-pink-100 text-center">
+                        <p id="shad-wpm" class="text-2xl font-black text-pink-300">—</p>
+                        <p class="text-xs text-gray-500 mt-0.5">avg WPM</p>
                     </div>
                 </div>
 
+                <div class="mb-4" style="height:80px">
+                    <canvas id="shad-chart" height="80"></canvas>
+                </div>
+
                 <a href="https://shadowing-app-silk.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn-base w-full bg-pink-50 hover:bg-pink-100 text-pink-600 border border-pink-200 rounded-xl flex items-center justify-center font-bold text-sm">
-                    Try it today →
+                    Practice now →
                 </a>
             </article>
 
@@ -340,6 +352,49 @@
                 themeEl.textContent = data.english_theme || '—';
             }
 
+            function renderShadowing(data) {
+                const attemptsEl = document.getElementById('shad-attempts');
+                const coverageEl = document.getElementById('shad-coverage');
+                const wpmEl = document.getElementById('shad-wpm');
+                if (!data) return;
+
+                attemptsEl.textContent = data.today_attempts != null ? data.today_attempts : '—';
+                attemptsEl.className = 'text-2xl font-black ' + (data.today_attempts > 0 ? 'text-pink-500' : 'text-gray-400');
+                coverageEl.textContent = data.today_avg_coverage > 0 ? `${Math.round(data.today_avg_coverage)}%` : '—';
+                wpmEl.textContent = data.today_avg_wpm > 0 ? Math.round(data.today_avg_wpm) : '—';
+
+                const history = (data.history || []).slice(-14);
+                if (history.length > 0) {
+                    const today = data.today;
+                    const labels = history.map(h => h.date.slice(5));
+                    const values = history.map(h => h.attempts);
+                    const ctx = document.getElementById('shad-chart').getContext('2d');
+                    new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels,
+                            datasets: [{
+                                label: 'Sessions',
+                                data: values,
+                                backgroundColor: values.map((_, i) =>
+                                    history[i].date === today ? 'rgba(236,72,153,0.9)' : 'rgba(236,72,153,0.4)'
+                                ),
+                                borderRadius: 4,
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: { legend: { display: false } },
+                            scales: {
+                                x: { grid: { display: false }, ticks: { font: { size: 9 }, color: '#9ca3af' } },
+                                y: { grid: { color: 'rgba(0,0,0,0.04)' }, ticks: { font: { size: 9 }, color: '#9ca3af' }, beginAtZero: true, precision: 0 }
+                            }
+                        }
+                    });
+                }
+            }
+
             function renderDuolingo(data) {
                 const streakEl = document.getElementById('duo-streak');
                 const xpEl = document.getElementById('duo-xp');
@@ -391,6 +446,7 @@
                     renderAiUsage(d.ai_usage);
                     renderNotebookLM(d.notebooklm);
                     renderDuolingo(d.duolingo);
+                    renderShadowing(d.shadowing);
                 })
                 .catch(() => {
                     renderAiUsage(null);
