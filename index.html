@@ -159,9 +159,24 @@
                     <p class="text-sm font-medium text-text-dark">"Latest Trends in AI Regulation"</p>
                 </div>
 
-                <a href="https://hasepyon-daily-research.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn-base w-full bg-white border-2 border-emerald-400 text-emerald-600 hover:bg-emerald-50 rounded-xl flex items-center justify-center font-bold text-sm">
+                <a id="daily-search-link" href="https://hasepyon-daily-research.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn-base w-full bg-white border-2 border-emerald-400 text-emerald-600 hover:bg-emerald-50 rounded-xl flex items-center justify-center font-bold text-sm">
                     Check it out →
                 </a>
+                <script>
+                    (function() {
+                        const today = new Date();
+                        const y = today.getFullYear();
+                        const m = String(today.getMonth() + 1).padStart(2, '0');
+                        const d = String(today.getDate()).padStart(2, '0');
+                        const todayUrl = `https://hasepyon-daily-research.vercel.app/entries/${y}-${m}-${d}.html`;
+                        const link = document.getElementById('daily-search-link');
+                        fetch(todayUrl, { method: 'HEAD' })
+                            .then(res => {
+                                if (res.ok) link.href = todayUrl;
+                            })
+                            .catch(() => {});
+                    })();
+                </script>
             </article>
 
             <!-- Card 3: Shadowing -->
