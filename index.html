@@ -6,15 +6,16 @@
     <title>Hase's Dashboard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Nunito', 'M PLUS Rounded 1c', 'sans-serif'],
+                        sans: ['Plus Jakarta Sans', 'M PLUS Rounded 1c', 'sans-serif'],
                     },
                     colors: {
                         pastel: {
@@ -117,7 +118,7 @@
         <!-- Header -->
         <header class="mb-8 fade-in-up">
             <h1 class="text-2xl font-bold text-text-dark mb-1 flex items-center gap-2">
-                <span id="greeting">Good morning, Hase-pyon</span> <span id="greeting-icon" class="text-3xl">☀️</span>
+                <span id="greeting">Good morning, Hase-pyon</span> <span id="greeting-icon" class="inline-flex"></span>
             </h1>
             <p id="today-date" class="text-text-sub text-sm font-medium"></p>
         </header>
@@ -129,7 +130,7 @@
                 <div class="absolute top-0 right-0 w-24 h-24 bg-pastel-purple rounded-bl-full opacity-30 -z-10"></div>
 
                 <div class="flex items-center gap-3 mb-4">
-                    <div class="w-10 h-10 rounded-full bg-pastel-purple flex items-center justify-center text-xl shadow-sm">📊</div>
+                    <div class="w-10 h-10 rounded-full bg-pastel-purple flex items-center justify-center shadow-sm"><i data-lucide="bar-chart-2" style="width:20px;height:20px;color:#7c3aed;stroke-width:1.5"></i></div>
                     <h2 class="text-lg font-bold text-text-dark">AI Usage</h2>
                 </div>
 
@@ -148,7 +149,7 @@
 
                 <div class="flex items-center justify-between mb-4">
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-pastel-green flex items-center justify-center text-xl shadow-sm">🔍</div>
+                        <div class="w-10 h-10 rounded-full bg-pastel-green flex items-center justify-center shadow-sm"><i data-lucide="search" style="width:20px;height:20px;color:#059669;stroke-width:1.5"></i></div>
                         <h2 class="text-lg font-bold text-text-dark">Gemini Daily</h2>
                     </div>
                     <span class="text-xs font-medium text-gray-500 bg-gray-100 px-2 py-1 rounded-full">Last run: yesterday</span>
@@ -184,7 +185,7 @@
                 <div class="absolute top-0 right-0 w-24 h-24 bg-pastel-pink rounded-bl-full opacity-30 -z-10"></div>
 
                 <div class="flex items-center gap-3 mb-4">
-                    <div class="w-10 h-10 rounded-full bg-pastel-pink flex items-center justify-center text-xl shadow-sm">🎙️</div>
+                    <div class="w-10 h-10 rounded-full bg-pastel-pink flex items-center justify-center shadow-sm"><i data-lucide="mic" style="width:20px;height:20px;color:#db2777;stroke-width:1.5"></i></div>
                     <h2 class="text-lg font-bold text-text-dark">Shadowing</h2>
                 </div>
 
@@ -217,7 +218,7 @@
                 <div class="absolute top-0 right-0 w-24 h-24 bg-yellow-50 rounded-bl-full opacity-40 -z-10"></div>
 
                 <div class="flex items-center gap-3 mb-4">
-                    <div class="w-10 h-10 rounded-full bg-yellow-50 flex items-center justify-center text-xl shadow-sm">📖</div>
+                    <div class="w-10 h-10 rounded-full bg-yellow-50 flex items-center justify-center shadow-sm"><i data-lucide="book-open" style="width:20px;height:20px;color:#d97706;stroke-width:1.5"></i></div>
                     <h2 class="text-lg font-bold text-text-dark">Vocabulary</h2>
                 </div>
 
@@ -226,7 +227,7 @@
                         <p class="text-xs text-yellow-600 font-medium mb-0.5">Total words looked up</p>
                         <p id="vocab-total" class="text-2xl font-black text-yellow-500">—</p>
                     </div>
-                    <div class="text-3xl">✨</div>
+                    <i data-lucide="sparkles" style="width:28px;height:28px;color:#f59e0b;stroke-width:1.5"></i>
                 </div>
 
                 <p class="text-xs font-bold text-text-sub uppercase tracking-wider mb-2">Top 5 tricky words</p>
@@ -240,16 +241,19 @@
                 <div class="absolute top-0 right-0 w-24 h-24 bg-pastel-orange rounded-bl-full opacity-30 -z-10"></div>
 
                 <div class="flex items-center gap-3 mb-4">
-                    <div class="w-10 h-10 rounded-full bg-pastel-orange flex items-center justify-center text-xl shadow-sm">🦜</div>
+                    <div class="w-10 h-10 rounded-full bg-pastel-orange flex items-center justify-center shadow-sm"><i data-lucide="zap" style="width:20px;height:20px;color:#ea580c;stroke-width:1.5"></i></div>
                     <div>
                         <h2 class="text-lg font-bold text-text-dark">Duolingo</h2>
-                        <p class="text-xs text-gray-400">For overseas job by 29 🌍</p>
+                        <p class="text-xs text-gray-400 flex items-center gap-1">For overseas job by 29 <i data-lucide="globe" style="width:12px;height:12px;stroke-width:1.5"></i></p>
                     </div>
                 </div>
 
                 <div class="flex gap-3 mb-4">
                     <div class="flex-1 bg-orange-50 rounded-xl p-3 border border-orange-100 text-center">
-                        <p id="duo-streak" class="text-2xl font-black text-orange-500">🔥 —</p>
+                        <div class="flex items-center justify-center gap-1">
+                            <i data-lucide="flame" style="width:18px;height:18px;color:#ea580c;stroke-width:1.5"></i>
+                            <p id="duo-streak" class="text-2xl font-black text-orange-500">—</p>
+                        </div>
                         <p class="text-xs text-gray-500 mt-0.5">day streak</p>
                     </div>
                     <div class="flex-1 bg-orange-50 rounded-xl p-3 border border-orange-100 text-center">
@@ -281,7 +285,7 @@
                 <div class="absolute top-0 right-0 w-24 h-24 bg-pastel-blue rounded-bl-full opacity-30 -z-10"></div>
 
                 <div class="flex items-center gap-3 mb-4">
-                    <div class="w-10 h-10 rounded-full bg-pastel-blue flex items-center justify-center text-xl shadow-sm">🎧</div>
+                    <div class="w-10 h-10 rounded-full bg-pastel-blue flex items-center justify-center shadow-sm"><i data-lucide="headphones" style="width:20px;height:20px;color:#2563eb;stroke-width:1.5"></i></div>
                     <h2 class="text-lg font-bold text-text-dark">NotebookLM</h2>
                 </div>
 
@@ -293,10 +297,6 @@
                         </div>
                     </div>
 
-                    <div class="bg-yellow-50 p-3 rounded-xl border border-yellow-100">
-                        <p class="text-xs text-gray-500 mb-1">Today's English Theme 📖</p>
-                        <p id="nlm-english-theme" class="text-sm font-semibold text-text-dark">—</p>
-                    </div>
                 </div>
             </article>
 
@@ -305,8 +305,8 @@
         <!-- Refresh Button -->
         <div class="mt-8 mb-2 flex justify-center fade-in-up" style="animation-delay:0.6s">
             <button id="refresh-btn" onclick="handleRefresh()" class="btn-base flex items-center gap-2 px-6 py-3 bg-white border-2 border-gray-200 hover:border-indigo-300 hover:bg-indigo-50 text-gray-500 hover:text-indigo-500 rounded-2xl shadow-soft font-bold text-sm transition-all duration-200">
-                <span id="refresh-icon" class="text-lg">🔄</span>
-                <span>最新情報に更新</span>
+                <span id="refresh-icon" class="inline-flex"><i data-lucide="refresh-cw" style="width:16px;height:16px;stroke-width:2"></i></span>
+                <span>Refresh</span>
             </button>
         </div>
         <p id="last-refreshed" class="text-center text-xs text-gray-300 mb-4"></p>
@@ -339,7 +339,7 @@
     </script>
     <script>
         (function() {
-            const SLOT_ICONS = { '朝': '🌅 Morning', '夜': '🌃 Evening' };
+            const SLOT_ICONS = { '朝': 'Morning', '夜': 'Evening' };
 
             function usageBar(pct) {
                 const filled = Math.round(pct / 10);
@@ -368,7 +368,7 @@
                             <p class="text-2xl font-black text-purple-600">${Math.round(totalScore)}<span class="text-sm font-semibold text-purple-300"> / ${totalMax}</span></p>
                             <span class="font-mono text-xs text-purple-400 tracking-tight">${totalBar} ${totalPct}%</span>
                         </div>
-                        <div class="text-3xl">🤖</div>
+                        <i data-lucide="bot" style="width:28px;height:28px;color:#a78bfa;stroke-width:1.5"></i>
                     </div>` +
                 rows.map(r => `
                     <div class="flex items-center justify-between gap-2">
@@ -498,7 +498,7 @@
                 const xpEl = document.getElementById('duo-xp');
                 const todayXpEl = document.getElementById('duo-today-xp');
                 if (!data) return;
-                streakEl.textContent = data.streak != null ? `🔥 ${data.streak}` : '🔥 —';
+                streakEl.textContent = data.streak != null ? data.streak : '—';
                 xpEl.textContent = data.total_xp != null ? data.total_xp.toLocaleString() : '—';
                 if (data.today_xp != null) {
                     todayXpEl.textContent = `+${data.today_xp}`;
@@ -546,6 +546,7 @@
                     renderDuolingo(d.duolingo);
                     renderShadowing(d.shadowing);
                     renderVocabulary(d.vocabulary);
+                    lucide.createIcons();
                 })
                 .catch(() => {
                     renderAiUsage(null);
@@ -562,19 +563,21 @@
             const iconEl = document.getElementById('greeting-icon');
             if (hour >= 5 && hour < 12) {
                 greetingEl.textContent = 'Good morning, Hase-pyon';
-                iconEl.textContent = '☀️';
+                iconEl.innerHTML = '<i data-lucide="sun" style="width:26px;height:26px;color:#f59e0b;stroke-width:1.5"></i>';
             } else if (hour >= 12 && hour < 18) {
                 greetingEl.textContent = 'Good afternoon, Hase-pyon';
-                iconEl.textContent = '🌤️';
+                iconEl.innerHTML = '<i data-lucide="cloud-sun" style="width:26px;height:26px;color:#f59e0b;stroke-width:1.5"></i>';
             } else {
                 greetingEl.textContent = 'Good evening, Hase-pyon';
-                iconEl.textContent = '🌙';
+                iconEl.innerHTML = '<i data-lucide="moon" style="width:26px;height:26px;color:#818cf8;stroke-width:1.5"></i>';
             }
+            lucide.createIcons();
             const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
             const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
             const dateStr = `${days[now.getDay()]}, ${months[now.getMonth()]} ${now.getDate()}, ${now.getFullYear()}`;
             document.getElementById('today-date').textContent = dateStr;
         })();
     </script>
+    <script>lucide.createIcons();</script>
 </body>
 </html>
