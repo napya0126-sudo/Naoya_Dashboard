@@ -108,6 +108,7 @@
         .card-accent-purple{ border-left: 4px solid #a78bfa; }
         .card-accent-green  { border-left: 4px solid #34d399; }
         .card-accent-orange { border-left: 4px solid #fb923c; }
+        .card-accent-yellow { border-left: 4px solid #f59e0b; }
     </style>
 </head>
 <body>
@@ -196,8 +197,31 @@
                 </a>
             </article>
 
-            <!-- Card 4: Duolingo -->
-            <article class="bg-white rounded-2xl shadow-soft p-5 fade-in-up delay-4 border border-orange-50 card-accent-orange relative overflow-hidden">
+            <!-- Card 4: Vocabulary -->
+            <article class="bg-white rounded-2xl shadow-soft p-5 fade-in-up delay-4 border border-yellow-50 card-accent-yellow relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-24 h-24 bg-yellow-50 rounded-bl-full opacity-40 -z-10"></div>
+
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-full bg-yellow-50 flex items-center justify-center text-xl shadow-sm">📖</div>
+                    <h2 class="text-lg font-bold text-text-dark">Vocabulary</h2>
+                </div>
+
+                <div class="bg-yellow-50 rounded-xl px-4 py-3 mb-4 border border-yellow-100 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs text-yellow-600 font-medium mb-0.5">Total words looked up</p>
+                        <p id="vocab-total" class="text-2xl font-black text-yellow-500">—</p>
+                    </div>
+                    <div class="text-3xl">✨</div>
+                </div>
+
+                <p class="text-xs font-bold text-text-sub uppercase tracking-wider mb-2">Top 5 tricky words</p>
+                <ul id="vocab-top5" class="space-y-1.5">
+                    <li class="text-xs text-gray-400 text-center py-1">Loading...</li>
+                </ul>
+            </article>
+
+            <!-- Card 5: Duolingo -->
+            <article class="bg-white rounded-2xl shadow-soft p-5 fade-in-up delay-5 border border-orange-50 card-accent-orange relative overflow-hidden">
                 <div class="absolute top-0 right-0 w-24 h-24 bg-pastel-orange rounded-bl-full opacity-30 -z-10"></div>
 
                 <div class="flex items-center gap-3 mb-4">
@@ -237,7 +261,7 @@
                 </a>
             </article>
 
-            <!-- Card 5: NotebookLM -->
+            <!-- Card 6: NotebookLM -->
             <article class="bg-white rounded-2xl shadow-soft p-5 fade-in-up delay-5 border border-blue-50 card-accent-blue relative overflow-hidden">
                 <div class="absolute top-0 right-0 w-24 h-24 bg-pastel-blue rounded-bl-full opacity-30 -z-10"></div>
 
@@ -352,6 +376,30 @@
                 themeEl.textContent = data.english_theme || '—';
             }
 
+            function renderVocabulary(data) {
+                const totalEl = document.getElementById('vocab-total');
+                const top5El = document.getElementById('vocab-top5');
+                if (!data) {
+                    totalEl.textContent = '—';
+                    top5El.innerHTML = '<li class="text-xs text-red-400 text-center py-1">Failed to load</li>';
+                    return;
+                }
+                totalEl.textContent = data.total ?? '—';
+                const items = data.top5 || [];
+                if (items.length === 0) {
+                    top5El.innerHTML = '<li class="text-xs text-gray-400 text-center py-1">No words yet</li>';
+                } else {
+                    top5El.innerHTML = items.map(item => `
+                        <li class="flex items-center justify-between bg-yellow-50 rounded-lg px-3 py-2 border border-yellow-100">
+                            <div class="flex items-center gap-2 min-w-0">
+                                <span class="text-sm font-bold text-text-dark truncate">${item.word_or_phrase}</span>
+                                ${item.translation ? `<span class="text-xs text-gray-400 truncate">— ${item.translation}</span>` : ''}
+                            </div>
+                            <span class="text-xs font-bold text-yellow-500 shrink-0 ml-2">×${item.lookup_count}</span>
+                        </li>`).join('');
+                }
+            }
+
             function renderShadowing(data) {
                 const attemptsEl = document.getElementById('shad-attempts');
                 const coverageEl = document.getElementById('shad-coverage');
@@ -447,10 +495,12 @@
                     renderNotebookLM(d.notebooklm);
                     renderDuolingo(d.duolingo);
                     renderShadowing(d.shadowing);
+                    renderVocabulary(d.vocabulary);
                 })
                 .catch(() => {
                     renderAiUsage(null);
                     renderNotebookLM(null);
+                    renderVocabulary(null);
                 });
         })();
     </script>

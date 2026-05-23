@@ -64,6 +64,56 @@ def get_ai_usage():
     return data
 
 
+SUPABASE_URL = "https://bzqmgcrvwgdpmfuqoorq.supabase.co"
+SUPABASE_ANON_KEY = (
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+    ".eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ6cW1nY3J2d2dkcG1mdXFvb3JxIiwicm9sZSI6ImFub24"
+    "iLCJpYXQiOjE3NzQyODQzOTYsImV4cCI6MjA4OTg2MDM5Nn0"
+    ".kAb-8IDb6xuH_8RXOciDpmW1JwdO9eugrdjDjWZ6dxk"
+)
+
+
+def get_shadowing():
+    today_str = str(date.today())
+    url = f"{SUPABASE_URL}/rest/v1/rpc/get_shadowing_stats"
+    try:
+        ctx = ssl.create_default_context()
+        ctx.check_hostname = False
+        ctx.verify_mode = ssl.CERT_NONE
+        req = urllib.request.Request(
+            url,
+            data=json.dumps({"days_back": 90}).encode(),
+            headers={
+                "Content-Type": "application/json",
+                "apikey": SUPABASE_ANON_KEY,
+                "Authorization": f"Bearer {SUPABASE_ANON_KEY}",
+            },
+            method="POST",
+        )
+        with urllib.request.urlopen(req, timeout=10, context=ctx) as res:
+            history = json.loads(res.read())
+    except Exception as e:
+        print(f"⚠ Shadowing fetch failed: {e}")
+        history = []
+
+    today_entry = next((e for e in history if e["day"] == today_str), None)
+    return {
+        "today": today_str,
+        "today_attempts": today_entry["attempts"] if today_entry else 0,
+        "today_avg_coverage": float(today_entry["avg_coverage"]) if today_entry else 0,
+        "today_avg_wpm": float(today_entry["avg_wpm"]) if today_entry else 0,
+        "history": [
+            {
+                "date": e["day"],
+                "attempts": e["attempts"],
+                "avg_coverage": float(e["avg_coverage"]),
+                "avg_wpm": float(e["avg_wpm"]),
+            }
+            for e in history
+        ],
+    }
+
+
 DUOLINGO_USERNAME = "RPhk251857"
 DUOLINGO_HISTORY_FILE = BASE / "duolingo_history.json"
 
@@ -135,6 +185,29 @@ def get_duolingo():
     }
 
 
+def get_vocabulary():
+    url = f"{SUPABASE_URL}/rest/v1/rpc/get_vocabulary_stats"
+    try:
+        ctx = ssl.create_default_context()
+        ctx.check_hostname = False
+        ctx.verify_mode = ssl.CERT_NONE
+        req = urllib.request.Request(
+            url,
+            data=b"{}",
+            headers={
+                "Content-Type": "application/json",
+                "apikey": SUPABASE_ANON_KEY,
+                "Authorization": f"Bearer {SUPABASE_ANON_KEY}",
+            },
+            method="POST",
+        )
+        with urllib.request.urlopen(req, timeout=10, context=ctx) as res:
+            return json.loads(res.read())
+    except Exception as e:
+        print(f"⚠ Vocabulary fetch failed: {e}")
+        return {"total": 0, "top5": []}
+
+
 def get_notebooklm():
     today_str = str(date.today())
     episodes = []
@@ -169,6 +242,8 @@ def main():
         "ai_usage": get_ai_usage(),
         "notebooklm": get_notebooklm(),
         "duolingo": get_duolingo(),
+        "shadowing": get_shadowing(),
+        "vocabulary": get_vocabulary(),
     }
     out = BASE / "data.json"
     out.write_text(json.dumps(data, ensure_ascii=False, indent=2))

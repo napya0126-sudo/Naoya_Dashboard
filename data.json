@@ -50,6 +50,12 @@
         "slot": "朝",
         "theme": "英語学習セッション",
         "languages": "ja,en"
+      },
+      {
+        "episode": "19",
+        "slot": "夜",
+        "theme": "科学・カルチャー・言語",
+        "languages": "ja,en"
       }
     ],
     "english_theme": "英語学習セッション"
@@ -84,6 +90,36 @@
         "attempts": 1,
         "avg_coverage": 20.0,
         "avg_wpm": 82.0
+      }
+    ]
+  },
+  "vocabulary": {
+    "total": 8,
+    "top5": [
+      {
+        "word_or_phrase": "mammalian",
+        "translation": "哺乳類の",
+        "lookup_count": 2
+      },
+      {
+        "word_or_phrase": "all of which attack the mammalian nervous system. Lyssavirus rabies, the most abundant, can infect any mammal",
+        "translation": null,
+        "lookup_count": 2
+      },
+      {
+        "word_or_phrase": "attack",
+        "translation": "攻撃",
+        "lookup_count": 2
+      },
+      {
+        "word_or_phrase": "nervous",
+        "translation": "緊張している",
+        "lookup_count": 1
+      },
+      {
+        "word_or_phrase": "which",
+        "translation": null,
+        "lookup_count": 1
       }
     ]
   }
