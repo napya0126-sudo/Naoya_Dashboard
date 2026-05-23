@@ -63,11 +63,17 @@
   "duolingo": {
     "streak": 355,
     "total_xp": 41706,
-    "today_xp": null,
+    "today_xp": 38,
     "history": [
       {
-        "date": "2026-05-23",
+        "date": "2026-05-22",
         "xp_earned": null,
+        "total_xp": 41668,
+        "streak": 354
+      },
+      {
+        "date": "2026-05-23",
+        "xp_earned": 38,
         "total_xp": 41706,
         "streak": 355
       }
