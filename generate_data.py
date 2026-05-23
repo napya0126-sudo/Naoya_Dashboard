@@ -65,10 +65,12 @@ def get_ai_usage():
 
 
 DUOLINGO_USERNAME = "RPhk251857"
+DUOLINGO_HISTORY_FILE = BASE / "duolingo_history.json"
 
 
 def get_duolingo():
     url = f"https://www.duolingo.com/2017-06-30/users?username={DUOLINGO_USERNAME}"
+    today_str = str(date.today())
     try:
         ctx = ssl.create_default_context()
         ctx.check_hostname = False
@@ -81,13 +83,56 @@ def get_duolingo():
             (c["xp"] for c in user.get("courses", []) if c["learningLanguage"] == "en"),
             None,
         )
-        return {
-            "streak": user.get("streak"),
-            "total_xp": en_xp,
-        }
+        streak = user.get("streak")
     except Exception as e:
         print(f"⚠ Duolingo fetch failed: {e}")
-        return {"streak": None, "total_xp": None}
+        streak, en_xp = None, None
+
+    # Load existing history
+    if DUOLINGO_HISTORY_FILE.exists():
+        history = json.loads(DUOLINGO_HISTORY_FILE.read_text())
+    else:
+        history = []
+
+    # Upsert today's snapshot
+    if en_xp is not None:
+        existing = next((e for e in history if e["date"] == today_str), None)
+        if existing:
+            existing["total_xp"] = en_xp
+            existing["streak"] = streak
+        else:
+            history.append({"date": today_str, "total_xp": en_xp, "streak": streak})
+        DUOLINGO_HISTORY_FILE.write_text(json.dumps(history, ensure_ascii=False, indent=2))
+
+    # Compute daily XP diff for last 14 days
+    sorted_history = sorted(history, key=lambda e: e["date"])
+    xp_history = []
+    for i, entry in enumerate(sorted_history):
+        if i == 0:
+            xp_earned = None  # can't compute diff for first entry
+        else:
+            prev = sorted_history[i - 1]
+            xp_earned = entry["total_xp"] - prev["total_xp"]
+            if xp_earned < 0:
+                xp_earned = 0  # reset or anomaly
+        xp_history.append({
+            "date": entry["date"],
+            "xp_earned": xp_earned,
+            "total_xp": entry["total_xp"],
+            "streak": entry.get("streak"),
+        })
+
+    # Last 14 days only
+    xp_history = xp_history[-14:]
+
+    today_xp = next((e["xp_earned"] for e in xp_history if e["date"] == today_str), None)
+
+    return {
+        "streak": streak,
+        "total_xp": en_xp,
+        "today_xp": today_xp,
+        "history": xp_history,
+    }
 
 
 def get_notebooklm():
