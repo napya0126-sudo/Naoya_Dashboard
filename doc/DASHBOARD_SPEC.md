@@ -1,7 +1,7 @@
 # Naoya Dashboard — 要件定義
 
 作成日: 2026-05-22  
-最終更新: 2026-05-23（Duolingo Daily XP差分記録・履歴チャート追加）
+最終更新: 2026-05-23（Vocabulary カード追記）
 
 ---
 
@@ -52,6 +52,13 @@
 - データ取得: 非公式API（`duolingo.com/2017-06-30/users?username=...`）認証不要
 - ローカル蓄積: `duolingo_history.json` に日別スナップショットを保存し差分計算
 - 更新: `generate_data.py` から毎朝7時 cron で自動取得
+
+### 📖 Vocabulary (単語帳)
+- **総調べ単語数**: shadowing-app で字幕タップして調べた単語の累計（`vocabulary_items` の件数）
+- **苦手単語 TOP5**: `lookup_count` が多い or `review_correct / review_total` が低い単語のリスト
+  - 単語（英語）+ 日本語訳 + 調べた回数を表示
+- データソース: shadowing-app と共通の **Supabase** `vocabulary_items` テーブルを直読み
+- カラーアクセント: イエロー系（学習・記憶をイメージ）
 
 ### 🎧 NotebookLM Hub ← メイン変更点
 - **今日配信されているエピソードのタイトル一覧**
@@ -110,6 +117,7 @@
 | カード順変更 | AI Usage → Gemini Daily → Shadowing → NotebookLM |
 | Duolingo連携 | 非公式APIでストリーク・総XP取得 → data.json経由で表示。毎朝7時cron自動実行 |
 | Duolingo 差分保存・チャート | `duolingo_history.json` に日別スナップショットを蓄積し前日差分でDaily XPを算出。過去14日分をバーチャートで表示 |
+| Vocabulary カード（未実装・仕様確定） | shadowing-app の Supabase `vocabulary_items` を直読み。総調べ単語数 + 苦手TOP5（lookup_count 降順）。イエロー系アクセント。Shadowing カードの直後に配置予定 |
 
 ---
 
