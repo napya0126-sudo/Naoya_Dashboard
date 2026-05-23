@@ -1,0 +1,31 @@
+{
+  "generated_at": "2026-05-23",
+  "ai_usage": {
+    "captured_at": "2026-05-23T09:00:50",
+    "claude": {
+      "session": 26.0,
+      "weekly_all": 5.0,
+      "weekly_design": 0.0
+    },
+    "gemini": {
+      "current": 0.0,
+      "weekly": 4.0
+    }
+  },
+  "notebooklm": {
+    "today": "2026-05-23",
+    "episodes": [
+      {
+        "episode": "18",
+        "slot": "朝",
+        "theme": "英語学習セッション",
+        "languages": "ja,en"
+      }
+    ],
+    "english_theme": "英語学習セッション"
+  },
+  "duolingo": {
+    "streak": 354,
+    "total_xp": 41668
+  }
+}

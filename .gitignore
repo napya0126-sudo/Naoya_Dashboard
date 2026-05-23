@@ -1,0 +1,3 @@
+cron.log
+__pycache__/
+*.pyc

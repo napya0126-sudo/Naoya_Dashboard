@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Hase's Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Nunito', 'M PLUS Rounded 1c', 'sans-serif'],
+                    },
+                    colors: {
+                        pastel: {
+                            blue: '#e0f2fe',
+                            pink: '#fce7f3',
+                            green: '#dcfce7',
+                            yellow: '#fef08a',
+                            purple: '#f3e8ff',
+                            orange: '#ffedd5',
+                        },
+                        text: {
+                            main: '#4b5563',
+                            sub: '#9ca3af',
+                            dark: '#1f2937'
+                        }
+                    },
+                    borderRadius: {
+                        'xl': '20px',
+                        '2xl': '24px',
+                    },
+                    boxShadow: {
+                        'soft': '0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #e0f2fe 0%, #f0e9ff 50%, #fce7f3 100%);
+            color: #4b5563;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+        }
+        .dashboard-container {
+            width: 100%;
+            max-width: 430px;
+            padding: 24px 20px 40px;
+        }
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+        .delay-5 { animation-delay: 0.5s; }
+        .btn-base {
+            min-height: 44px;
+            transition: all 0.2s ease;
+        }
+        .btn-base:active { transform: scale(0.97); }
+        .bar-chart-container {
+            display: flex;
+            align-items: flex-end;
+            gap: 4px;
+            height: 40px;
+        }
+        .bar {
+            width: 12px;
+            background-color: #cbd5e1;
+            border-radius: 4px 4px 0 0;
+            transition: height 0.5s ease;
+        }
+        .bar.active { background-color: #818cf8; }
+        .bar-chart-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+        }
+        .bar-labels {
+            display: flex;
+            gap: 4px;
+        }
+        .bar-label {
+            width: 12px;
+            text-align: center;
+            font-size: 9px;
+            color: #9ca3af;
+            font-weight: 600;
+        }
+        .card-accent-blue  { border-left: 4px solid #60a5fa; }
+        .card-accent-pink  { border-left: 4px solid #f472b6; }
+        .card-accent-purple{ border-left: 4px solid #a78bfa; }
+        .card-accent-green  { border-left: 4px solid #34d399; }
+        .card-accent-orange { border-left: 4px solid #fb923c; }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+
+        <!-- Header -->
+        <header class="mb-8 fade-in-up">
+            <h1 class="text-2xl font-bold text-text-dark mb-1 flex items-center gap-2">
+                <span id="greeting">Good morning, Hase-pyon</span> <span id="greeting-icon" class="text-3xl">☀️</span>
+            </h1>
+            <p id="today-date" class="text-text-sub text-sm font-medium"></p>
+        </header>
+
+        <main class="flex flex-col gap-5">
+
+            <!-- Card 1: AI Usage -->
+            <article class="bg-white rounded-2xl shadow-soft p-5 fade-in-up delay-1 border border-purple-50 card-accent-purple relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-24 h-24 bg-pastel-purple rounded-bl-full opacity-30 -z-10"></div>
+
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-full bg-pastel-purple flex items-center justify-center text-xl shadow-sm">📊</div>
+                    <h2 class="text-lg font-bold text-text-dark">AI Usage</h2>
+                </div>
+
+                <div id="ai-usage-stats" class="space-y-2">
+                    <div class="text-xs text-gray-400 text-center py-2">Loading...</div>
+                </div>
+            </article>
+
+            <!-- Card 2: Gemini Daily Search -->
+            <article class="bg-white rounded-2xl shadow-soft p-5 fade-in-up delay-2 border border-green-50 card-accent-green relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-24 h-24 bg-pastel-green rounded-bl-full opacity-30 -z-10"></div>
+
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-pastel-green flex items-center justify-center text-xl shadow-sm">🔍</div>
+                        <h2 class="text-lg font-bold text-text-dark">Gemini Daily</h2>
+                    </div>
+                    <span class="text-xs font-medium text-gray-500 bg-gray-100 px-2 py-1 rounded-full">Last run: yesterday</span>
+                </div>
+
+                <div class="bg-gray-50 p-3 rounded-xl mb-4 border border-gray-100">
+                    <p class="text-xs text-gray-500 mb-1">Latest topic</p>
+                    <p class="text-sm font-medium text-text-dark">"Latest Trends in AI Regulation"</p>
+                </div>
+
+                <a href="https://hasepyon-daily-research.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn-base w-full bg-white border-2 border-emerald-400 text-emerald-600 hover:bg-emerald-50 rounded-xl flex items-center justify-center font-bold text-sm">
+                    Check it out →
+                </a>
+            </article>
+
+            <!-- Card 3: Shadowing -->
+            <article class="bg-white rounded-2xl shadow-soft p-5 fade-in-up delay-3 border border-pink-50 card-accent-pink relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-24 h-24 bg-pastel-pink rounded-bl-full opacity-30 -z-10"></div>
+
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-full bg-pastel-pink flex items-center justify-center text-xl shadow-sm">🎙️</div>
+                    <h2 class="text-lg font-bold text-text-dark">Shadowing</h2>
+                </div>
+
+                <div class="flex justify-between items-center mb-5">
+                    <div>
+                        <p class="text-sm text-gray-500">Last practice: <span class="font-bold text-red-400">3 days ago 😅</span></p>
+                        <p class="text-sm text-gray-500 mt-1">This week: <span class="font-bold text-text-dark">0 sessions</span></p>
+                    </div>
+                </div>
+
+                <a href="https://shadowing-app-silk.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn-base w-full bg-pink-50 hover:bg-pink-100 text-pink-600 border border-pink-200 rounded-xl flex items-center justify-center font-bold text-sm">
+                    Try it today →
+                </a>
+            </article>
+
+            <!-- Card 4: Duolingo -->
+            <article class="bg-white rounded-2xl shadow-soft p-5 fade-in-up delay-4 border border-orange-50 card-accent-orange relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-24 h-24 bg-pastel-orange rounded-bl-full opacity-30 -z-10"></div>
+
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-full bg-pastel-orange flex items-center justify-center text-xl shadow-sm">🦜</div>
+                    <div>
+                        <h2 class="text-lg font-bold text-text-dark">Duolingo</h2>
+                        <p class="text-xs text-gray-400">For overseas job by 29 🌍</p>
+                    </div>
+                </div>
+
+                <div class="flex gap-3 mb-4">
+                    <div class="flex-1 bg-orange-50 rounded-xl p-3 border border-orange-100 text-center">
+                        <p id="duo-streak" class="text-2xl font-black text-orange-500">🔥 —</p>
+                        <p class="text-xs text-gray-500 mt-0.5">day streak</p>
+                    </div>
+                    <div class="flex-1 bg-orange-50 rounded-xl p-3 border border-orange-100 text-center">
+                        <p id="duo-xp" class="text-2xl font-black text-orange-400">—</p>
+                        <p class="text-xs text-gray-500 mt-0.5">total XP (EN)</p>
+                    </div>
+                </div>
+
+                <a href="https://www.duolingo.com" target="_blank" rel="noopener noreferrer" class="btn-base w-full bg-orange-400 hover:bg-orange-500 text-white rounded-xl flex items-center justify-center font-bold text-sm">
+                    Start today's lesson →
+                </a>
+            </article>
+
+            <!-- Card 5: NotebookLM -->
+            <article class="bg-white rounded-2xl shadow-soft p-5 fade-in-up delay-5 border border-blue-50 card-accent-blue relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-24 h-24 bg-pastel-blue rounded-bl-full opacity-30 -z-10"></div>
+
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-full bg-pastel-blue flex items-center justify-center text-xl shadow-sm">🎧</div>
+                    <h2 class="text-lg font-bold text-text-dark">NotebookLM</h2>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <p class="text-xs font-bold text-text-sub uppercase tracking-wider mb-2">Today's Podcasts</p>
+                        <div id="nlm-episodes" class="flex flex-col gap-2">
+                            <div class="text-xs text-gray-400 text-center py-2">Loading...</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-yellow-50 p-3 rounded-xl border border-yellow-100">
+                        <p class="text-xs text-gray-500 mb-1">Today's English Theme 📖</p>
+                        <p id="nlm-english-theme" class="text-sm font-semibold text-text-dark">—</p>
+                    </div>
+                </div>
+            </article>
+
+        </main>
+    </div>
+    <script>
+        (function() {
+            const SLOT_ICONS = { '朝': '🌅 Morning', '夜': '🌃 Evening' };
+
+            function usageBar(pct) {
+                const filled = Math.round(pct / 10);
+                const bar = '█'.repeat(filled) + '░'.repeat(10 - filled);
+                return bar;
+            }
+
+            function renderAiUsage(data) {
+                const el = document.getElementById('ai-usage-stats');
+                if (!data) { el.innerHTML = '<div class="text-xs text-red-400 text-center py-2">Failed to load</div>'; return; }
+                const c = data.claude || {};
+                const g = data.gemini || {};
+                const rows = [
+                    { label: 'Claude Session', pct: c.session ?? 0, color: 'text-purple-500' },
+                    { label: 'Claude Weekly', pct: c.weekly_all ?? 0, color: 'text-purple-400' },
+                    { label: 'Gemini Weekly', pct: g.weekly ?? 0, color: 'text-blue-400' },
+                ];
+                el.innerHTML = rows.map(r => `
+                    <div class="flex items-center justify-between gap-2">
+                        <span class="text-xs text-gray-500 w-28 shrink-0">${r.label}</span>
+                        <span class="font-mono text-xs ${r.color} tracking-tight">${usageBar(r.pct)}</span>
+                        <span class="text-xs font-bold ${r.color} w-8 text-right">${r.pct}%</span>
+                    </div>`).join('');
+                const updated = data.captured_at ? data.captured_at.slice(0, 10) : '';
+                if (updated) el.insertAdjacentHTML('beforeend', `<p class="text-xs text-gray-300 text-right mt-1">${updated}</p>`);
+            }
+
+            function renderNotebookLM(data) {
+                const epEl = document.getElementById('nlm-episodes');
+                const themeEl = document.getElementById('nlm-english-theme');
+                if (!data) { epEl.innerHTML = '<div class="text-xs text-red-400 text-center py-2">Failed to load</div>'; return; }
+
+                if (!data.episodes || data.episodes.length === 0) {
+                    epEl.innerHTML = '<div class="text-xs text-gray-400 text-center py-2">No episodes today yet</div>';
+                } else {
+                    epEl.innerHTML = data.episodes.map(ep => `
+                        <div class="bg-gray-50 rounded-xl px-4 py-2 flex items-center justify-between border border-gray-100">
+                            <div class="flex flex-col">
+                                <span class="text-xs font-bold text-blue-400">${SLOT_ICONS[ep.slot] || ep.slot}</span>
+                                <span class="text-sm font-medium text-text-dark">${ep.theme}</span>
+                            </div>
+                            <span class="text-xs text-gray-300 ml-2">#${ep.episode}</span>
+                        </div>`).join('');
+                }
+                themeEl.textContent = data.english_theme || '—';
+            }
+
+            function renderDuolingo(data) {
+                const streakEl = document.getElementById('duo-streak');
+                const xpEl = document.getElementById('duo-xp');
+                if (!data) return;
+                streakEl.textContent = data.streak != null ? `🔥 ${data.streak}` : '🔥 —';
+                xpEl.textContent = data.total_xp != null ? data.total_xp.toLocaleString() : '—';
+            }
+
+            fetch('./data.json')
+                .then(r => r.json())
+                .then(d => {
+                    renderAiUsage(d.ai_usage);
+                    renderNotebookLM(d.notebooklm);
+                    renderDuolingo(d.duolingo);
+                })
+                .catch(() => {
+                    renderAiUsage(null);
+                    renderNotebookLM(null);
+                });
+        })();
+    </script>
+    <script>
+        (function() {
+            const now = new Date();
+            const hour = now.getHours();
+            const greetingEl = document.getElementById('greeting');
+            const iconEl = document.getElementById('greeting-icon');
+            if (hour >= 5 && hour < 12) {
+                greetingEl.textContent = 'Good morning, Hase-pyon';
+                iconEl.textContent = '☀️';
+            } else if (hour >= 12 && hour < 18) {
+                greetingEl.textContent = 'Good afternoon, Hase-pyon';
+                iconEl.textContent = '🌤️';
+            } else {
+                greetingEl.textContent = 'Good evening, Hase-pyon';
+                iconEl.textContent = '🌙';
+            }
+            const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+            const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+            const dateStr = `${days[now.getDay()]}, ${months[now.getMonth()]} ${now.getDate()}, ${now.getFullYear()}`;
+            document.getElementById('today-date').textContent = dateStr;
+        })();
+    </script>
+</body>
+</html>
