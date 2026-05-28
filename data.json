@@ -1,15 +1,10 @@
 {
-  "generated_at": "2026-05-23",
+  "generated_at": "2026-05-28",
   "ai_usage": {
-    "captured_at": "2026-05-23T09:00:50",
-    "claude": {
-      "session": 26.0,
-      "weekly_all": 5.0,
-      "weekly_design": 0.0
-    },
+    "captured_at": "2026-05-28T09:01:05",
     "gemini": {
       "current": 0.0,
-      "weekly": 4.0
+      "weekly": 1.0
     },
     "history": [
       {
@@ -39,31 +34,66 @@
         "claude_session": 26.0,
         "claude_weekly": 5.0,
         "gemini_weekly": 4.0
+      },
+      {
+        "date": "2026-05-24",
+        "total_score": 25.0,
+        "claude_session": 0.0,
+        "claude_weekly": 21.0,
+        "gemini_weekly": 4.0
+      },
+      {
+        "date": "2026-05-25",
+        "total_score": 28.0,
+        "claude_session": 0.0,
+        "claude_weekly": 22.0,
+        "gemini_weekly": 6.0
+      },
+      {
+        "date": "2026-05-26",
+        "total_score": 32.0,
+        "claude_session": 0.0,
+        "claude_weekly": 26.0,
+        "gemini_weekly": 6.0
+      },
+      {
+        "date": "2026-05-27",
+        "total_score": 0.0,
+        "claude_session": 0,
+        "claude_weekly": 0,
+        "gemini_weekly": 0.0
+      },
+      {
+        "date": "2026-05-28",
+        "total_score": 1.0,
+        "claude_session": 0,
+        "claude_weekly": 0,
+        "gemini_weekly": 1.0
       }
     ]
   },
   "notebooklm": {
-    "today": "2026-05-23",
+    "today": "2026-05-28",
     "episodes": [
       {
-        "episode": "18",
+        "episode": "28",
         "slot": "朝",
-        "theme": "英語学習セッション",
+        "theme": "スタートアップ・プロダクト・QA",
         "languages": "ja,en"
       },
       {
-        "episode": "19",
+        "episode": "29",
         "slot": "夜",
-        "theme": "科学・カルチャー・言語",
+        "theme": "スタートアップ・プロダクト・QA",
         "languages": "ja,en"
       }
     ],
-    "english_theme": "英語学習セッション"
+    "english_theme": "スタートアップ・プロダクト・QA"
   },
   "duolingo": {
-    "streak": 355,
-    "total_xp": 41706,
-    "today_xp": 38,
+    "streak": 357,
+    "total_xp": 41789,
+    "today_xp": 40,
     "history": [
       {
         "date": "2026-05-22",
@@ -76,11 +106,41 @@
         "xp_earned": 38,
         "total_xp": 41706,
         "streak": 355
+      },
+      {
+        "date": "2026-05-24",
+        "xp_earned": 0,
+        "total_xp": 41706,
+        "streak": 355
+      },
+      {
+        "date": "2026-05-25",
+        "xp_earned": 43,
+        "total_xp": 41749,
+        "streak": 356
+      },
+      {
+        "date": "2026-05-26",
+        "xp_earned": 0,
+        "total_xp": 41749,
+        "streak": 356
+      },
+      {
+        "date": "2026-05-27",
+        "xp_earned": 0,
+        "total_xp": 41749,
+        "streak": 356
+      },
+      {
+        "date": "2026-05-28",
+        "xp_earned": 40,
+        "total_xp": 41789,
+        "streak": 357
       }
     ]
   },
   "shadowing": {
-    "today": "2026-05-23",
+    "today": "2026-05-28",
     "today_attempts": 0,
     "today_avg_coverage": 0,
     "today_avg_wpm": 0,
